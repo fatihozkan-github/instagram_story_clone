@@ -1,8 +1,8 @@
 import 'dart:async';
 
+import 'package:cached_video_player/cached_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:video_player/video_player.dart';
 
 import "../../data/models/story_data_model.dart";
 
@@ -15,7 +15,7 @@ class StoryPlayerBloc extends Bloc<StoryPlayerEvent, StoryPlayerState> {
     on<StoryPlayerEventPlayerPlay>(_onPlay);
   }
 
-  VideoPlayerController? _videoPlayerController;
+  CachedVideoPlayerController? _videoPlayerController;
 
   FutureOr<void> _onInitialize(
     StoryPlayerEventInitial event,
@@ -45,8 +45,8 @@ class StoryPlayerBloc extends Bloc<StoryPlayerEvent, StoryPlayerState> {
 
   Future<void> _initializeVideoPlayer(String mediaUrl) async {
     try {
-      _videoPlayerController = VideoPlayerController.networkUrl(
-        Uri.parse(mediaUrl),
+      _videoPlayerController = CachedVideoPlayerController.network(
+        mediaUrl,
       );
       _videoPlayerController?.addListener(() {
         if (isClosed) {

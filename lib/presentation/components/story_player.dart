@@ -1,6 +1,6 @@
+import 'package:cached_video_player/cached_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:video_player/video_player.dart';
 
 import '../../blocs/story_group/story_group_bloc.dart';
 import '../../blocs/story_player/story_player_bloc.dart';
@@ -139,14 +139,14 @@ class StoryPlayer extends StatelessWidget {
     );
   }
 
-  Widget _buildVideoUI(VideoPlayerController? videoPlayerController) {
+  Widget _buildVideoUI(CachedVideoPlayerController? videoPlayerController) {
     return videoPlayerController?.value.hasError ?? true
         ? _buildErrorUI()
         : videoPlayerController?.value.isInitialized ?? false
             ? Center(
                 child: AspectRatio(
                   aspectRatio: videoPlayerController!.value.aspectRatio,
-                  child: VideoPlayer(videoPlayerController),
+                  child: CachedVideoPlayer(videoPlayerController),
                 ),
               )
             : const SizedBox();

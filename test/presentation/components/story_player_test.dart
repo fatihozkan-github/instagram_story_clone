@@ -1,4 +1,5 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:cached_video_player/cached_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -7,7 +8,6 @@ import 'package:instagram_story_clone/blocs/story_player/story_player_bloc.dart'
 import 'package:instagram_story_clone/core/enums/enums.dart';
 import 'package:instagram_story_clone/presentation/components/adaptive_loading_indicator.dart';
 import 'package:instagram_story_clone/presentation/components/story_player.dart';
-import 'package:video_player/video_player.dart';
 // ignore: depend_on_referenced_packages
 import 'package:video_player_platform_interface/video_player_platform_interface.dart';
 
@@ -219,8 +219,8 @@ void main() {
     });
 
     testWidgets("should build StoryPlayer with video", (widgetTester) async {
-      final fakeVideoPlayerController = VideoPlayerController.networkUrl(
-        Uri.parse('https://127.0.0.1'),
+      final fakeVideoPlayerController = CachedVideoPlayerController.network(
+        'https://127.0.0.1',
       );
       await fakeVideoPlayerController.initialize();
 
@@ -239,7 +239,7 @@ void main() {
       await pumpStoryPlayerViewWithVideo(widgetTester);
       mockStoryPlayerBloc.add(StoryPlayerEventPlayerPlay());
       await widgetTester.pumpAndSettle();
-      final widgetFinder = find.byType(VideoPlayer);
+      final widgetFinder = find.byType(CachedVideoPlayer);
       expect(widgetFinder, findsOneWidget);
     });
   });

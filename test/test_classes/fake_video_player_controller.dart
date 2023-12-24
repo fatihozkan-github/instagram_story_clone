@@ -1,10 +1,10 @@
+import 'package:cached_video_player/cached_video_player.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:video_player/video_player.dart';
 
-class FakeVideoPlayerController extends ValueNotifier<VideoPlayerValue>
-    implements VideoPlayerController {
+class FakeVideoPlayerController extends ValueNotifier<CachedVideoPlayerValue>
+    implements CachedVideoPlayerController {
   FakeVideoPlayerController()
-      : super(const VideoPlayerValue(duration: Duration.zero));
+      : super(CachedVideoPlayerValue(duration: Duration.zero));
 
   FakeVideoPlayerController.value(super.value);
 
@@ -14,7 +14,7 @@ class FakeVideoPlayerController extends ValueNotifier<VideoPlayerValue>
   }
 
   @override
-  int textureId = VideoPlayerController.kUninitializedTextureId;
+  int textureId = -1;
 
   @override
   String get dataSource => '';
@@ -60,12 +60,4 @@ class FakeVideoPlayerController extends ValueNotifier<VideoPlayerValue>
 
   @override
   VideoPlayerOptions? get videoPlayerOptions => null;
-
-  @override
-  void setCaptionOffset(Duration delay) {}
-
-  @override
-  Future<void> setClosedCaptionFile(
-    Future<ClosedCaptionFile>? closedCaptionFile,
-  ) async {}
 }

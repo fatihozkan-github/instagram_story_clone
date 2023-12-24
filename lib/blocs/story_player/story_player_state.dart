@@ -9,7 +9,7 @@ class StoryPlayerStateLoading extends StoryPlayerState {}
 class StoryPlayerStatePlayerReady extends StoryPlayerState {}
 
 class StoryPlayerStatePlay extends StoryPlayerState {
-  final VideoPlayerController? videoPlayerController;
+  final CachedVideoPlayerController? videoPlayerController;
 
   StoryPlayerStatePlay({required this.videoPlayerController});
 }

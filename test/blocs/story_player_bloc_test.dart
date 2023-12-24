@@ -55,8 +55,8 @@ void main() {
       },
       expect: () => [
         isA<StoryPlayerStateLoading>(),
-        isA<StoryPlayerStatePlayerReady>(),
         isA<StoryPlayerStatePlay>(),
+        isA<StoryPlayerStatePlayerReady>(),
       ],
     );
   });
