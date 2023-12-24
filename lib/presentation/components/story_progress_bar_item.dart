@@ -31,7 +31,8 @@ class StoryProgressBarItem extends StatelessWidget {
     final animationController = BlocProvider.of<StoryGroupBloc>(context)
         .currentStoryProgressAnimationController;
     if (currentStoryIndex == state.currentProgressIndex &&
-        animationController != null) {
+        animationController != null &&
+        state is StoryProgressStateRefresh) {
       return Stack(
         children: [
           Container(height: 2, width: progressItemWidth, color: Colors.grey),

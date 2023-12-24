@@ -60,9 +60,12 @@ void main() {
                   ),
                 child: StoryPlayer(
                   storyIndex: 0,
+                  totalStoryCount: 0,
                   storyDataModel: TestVariables
                       .testStoryGroupModelList.first.storyDataList.first,
                   onTap: (StoryScreenTapRegion storyScreenTapRegion) {},
+                  isFirstGroup: true,
+                  isLastGroup: true,
                 ),
               ),
             ),
@@ -94,9 +97,12 @@ void main() {
                   ),
                 child: StoryPlayer(
                   storyIndex: 0,
+                  totalStoryCount: 0,
                   storyDataModel: TestVariables
                       .testStoryGroupModelList.first.storyDataList.last,
                   onTap: (StoryScreenTapRegion storyScreenTapRegion) {},
+                  isFirstGroup: true,
+                  isLastGroup: true,
                 ),
               ),
             ),

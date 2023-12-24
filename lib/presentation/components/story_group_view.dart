@@ -55,6 +55,9 @@ class StoryGroupView extends StatelessWidget {
           scaffoldState: scaffoldState,
         ),
       );
+      BlocProvider.of<StoryProgressBloc>(context).add(
+        StoryProgressEventInitial(newProgressIndex: state.newPage),
+      );
     } else if (state is StoryGroupStateScreenStoryStart) {
       BlocProvider.of<StoryProgressBloc>(context).add(
         StoryProgressEventRefresh(newProgressIndex: state.newPage),
@@ -115,6 +118,8 @@ class StoryGroupView extends StatelessWidget {
       controller: state.pageController,
       itemCount: storyGroupModel.storyDataList.length,
       itemBuilder: (_, int index) {
+        final storyGroupList =
+            BlocProvider.of<StoryPageViewBloc>(context).storyGroupList;
         return BlocProvider(
           create: (_) => StoryPlayerBloc()
             ..add(
@@ -124,10 +129,17 @@ class StoryGroupView extends StatelessWidget {
             ),
           child: StoryPlayer(
             storyIndex: index,
+            totalStoryCount: storyGroupModel.storyDataList.length,
             storyDataModel: storyGroupModel.storyDataList[index],
             onTap: (StoryScreenTapRegion storyScreenTapRegion) {
               _onTap(context, storyScreenTapRegion);
             },
+            isFirstGroup: storyGroupList.isEmpty
+                ? false
+                : storyGroupList.first.id == storyGroupModel.id,
+            isLastGroup: storyGroupList.isEmpty
+                ? false
+                : storyGroupList.last.id == storyGroupModel.id,
           ),
         );
       },

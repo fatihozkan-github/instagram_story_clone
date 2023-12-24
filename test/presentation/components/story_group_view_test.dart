@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:instagram_story_clone/blocs/story_group/story_group_bloc.dart';
 import 'package:instagram_story_clone/blocs/story_page_view/story_page_view_bloc.dart';
 import 'package:instagram_story_clone/blocs/story_progress/story_progress_bloc.dart';
+import 'package:instagram_story_clone/data/models/story_group_model.dart';
 import 'package:instagram_story_clone/presentation/components/story_group_view.dart';
 import 'package:instagram_story_clone/presentation/components/story_progress_bar_item.dart';
 
@@ -13,6 +14,9 @@ import '../../test_classes/test_variables.dart';
 class MockStoryPageViewBloc
     extends MockBloc<StoryPageViewEvent, StoryPageViewState>
     implements StoryPageViewBloc {
+  @override
+  List<StoryGroupModel> get storyGroupList => [];
+
   @override
   List<int> get storyGroupHistoryIndexList => [0];
 }

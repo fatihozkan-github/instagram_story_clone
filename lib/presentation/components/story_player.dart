@@ -13,12 +13,18 @@ import 'adaptive_loading_indicator.dart';
 
 class StoryPlayer extends StatelessWidget {
   final int storyIndex;
+  final int totalStoryCount;
+  final bool isFirstGroup;
+  final bool isLastGroup;
   final StoryDataModel storyDataModel;
   final OnScreenTapped onTap;
 
   const StoryPlayer({
     super.key,
     required this.storyIndex,
+    required this.totalStoryCount,
+    required this.isFirstGroup,
+    required this.isLastGroup,
     required this.storyDataModel,
     required this.onTap,
   });
@@ -81,12 +87,12 @@ class StoryPlayer extends StatelessWidget {
         return GestureDetector(
           onLongPress: () => _onLongPress(context, state),
           onLongPressEnd: (_) => _onLongPressDown(context, state),
-          child: _buildStoryPlayerUI(state.videoPlayerController),
+          child: _buildStoryPlayerUI(context, state),
         );
     }
   }
 
-  Widget _buildStoryPlayerUI(VideoPlayerController? videoPlayerController) {
+  Widget _buildStoryPlayerUI(BuildContext context, StoryPlayerStatePlay state) {
     return SizedBox.expand(
       child: Stack(
         children: [
@@ -94,7 +100,7 @@ class StoryPlayer extends StatelessWidget {
             child: SizedBox.expand(
               child: storyDataModel.isPhoto
                   ? _buildImageUI(storyDataModel.url)
-                  : _buildVideoUI(videoPlayerController),
+                  : _buildVideoUI(state.videoPlayerController),
             ),
           ),
           Positioned.fill(
@@ -102,7 +108,16 @@ class StoryPlayer extends StatelessWidget {
               children: [
                 for (final tapRegion in StoryScreenTapRegion.values)
                   Expanded(
-                    child: GestureDetector(onTap: () => onTap(tapRegion)),
+                    child: GestureDetector(
+                      onTap: () {
+                        if (!(storyIndex == 0 && isFirstGroup) &&
+                            !(storyIndex == totalStoryCount - 1 &&
+                                isLastGroup)) {
+                          _onLongPress(context, state);
+                        }
+                        onTap(tapRegion);
+                      },
+                    ),
                   ),
               ],
             ),

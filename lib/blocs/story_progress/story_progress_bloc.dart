@@ -11,7 +11,19 @@ class StoryProgressBloc extends Bloc<StoryProgressEvent, StoryProgressState> {
       : super(
           StoryProgressStateInitial(currentProgressIndex: initialStep),
         ) {
+    on<StoryProgressEventInitial>(_onInitial);
     on<StoryProgressEventRefresh>(_onData);
+  }
+
+  FutureOr<void> _onInitial(
+    StoryProgressEventInitial event,
+    Emitter<StoryProgressState> emit,
+  ) {
+    emit(
+      StoryProgressStateInitial(
+        currentProgressIndex: event.newProgressIndex,
+      ),
+    );
   }
 
   FutureOr<void> _onData(

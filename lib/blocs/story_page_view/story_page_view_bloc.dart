@@ -39,20 +39,24 @@ class StoryPageViewBloc extends Bloc<StoryPageViewEvent, StoryPageViewState> {
 
   int get _itemCount => storyGroupHistoryIndexList.length;
 
+  List<StoryGroupModel> _storyGroupList = [];
+
+  List<StoryGroupModel> get storyGroupList => _storyGroupList;
+
   FutureOr<void> _onInit(
     StoryPageViewEventInitialize event,
     Emitter<StoryPageViewState> emit,
   ) async {
-    final storyGroupList = await _storyRepository.fetchNewStories();
+    _storyGroupList = await _storyRepository.fetchNewStories();
     _pageController = PageController(initialPage: 0);
     _storyGroupHistoryIndexList = List.generate(
-      storyGroupList.length,
+      _storyGroupList.length,
       (index) => 0,
     );
     emit(
       StoryPageViewStateReady(
         pageController: _pageController,
-        storyGroupList: storyGroupList,
+        storyGroupList: _storyGroupList,
         storyGroupHistoryIndexList: _storyGroupHistoryIndexList,
       ),
     );
