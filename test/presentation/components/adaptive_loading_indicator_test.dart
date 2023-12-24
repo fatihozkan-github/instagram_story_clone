@@ -6,7 +6,7 @@ import 'package:instagram_story_clone/presentation/components/adaptive_loading_i
 void main() {
   group("AdaptiveLoadingIndicator Widget Tests ", () {
     testWidgets(
-      "should build loading indicator for android",
+      "should build AdaptiveLoadingIndicator for android",
       (widgetTester) async {
         await widgetTester.pumpWidget(const AdaptiveLoadingIndicator());
         final widgetFinder = find.byType(AdaptiveLoadingIndicator);
@@ -16,7 +16,7 @@ void main() {
     );
 
     testWidgets(
-      "should build loading indicator for iOS",
+      "should build AdaptiveLoadingIndicator for iOS",
       (widgetTester) async {
         await widgetTester.pumpWidget(
           Theme(
@@ -62,7 +62,7 @@ void main() {
     );
 
     testWidgets(
-      "should build CupertinoActivityIndicator for non-mobile platform",
+      "should build CupertinoActivityIndicator child for non-mobile platform",
       (widgetTester) async {
         final themedAdaptiveLoadingIndicator = Theme(
           data: ThemeData(platform: TargetPlatform.linux),
