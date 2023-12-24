@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../blocs/story_page_view/story_page_view_bloc.dart';
-import '../components/loading_indicator.dart';
+import '../components/adaptive_loading_indicator.dart';
 import '../components/story_group_view.dart';
 
 class StoryPageView extends StatelessWidget {

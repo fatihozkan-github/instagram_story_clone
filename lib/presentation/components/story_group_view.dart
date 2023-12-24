@@ -6,7 +6,7 @@ import '../../blocs/story_page_view/story_page_view_bloc.dart';
 import '../../blocs/story_progress/story_progress_bloc.dart';
 import '../../core/enums/enums.dart';
 import '../../data/models/story_group_model.dart';
-import 'loading_indicator.dart';
+import 'adaptive_loading_indicator.dart';
 import 'story_player.dart';
 import 'story_progress_bar_item.dart';
 

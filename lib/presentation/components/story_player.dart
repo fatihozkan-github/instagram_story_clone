@@ -9,7 +9,7 @@ import '../../core/constants/string_constants.dart';
 import '../../core/enums/enums.dart';
 import '../../core/typedefs/typedefs.dart';
 import '../../data/models/story_data_model.dart';
-import 'loading_indicator.dart';
+import 'adaptive_loading_indicator.dart';
 
 class StoryPlayer extends StatelessWidget {
   final int storyIndex;

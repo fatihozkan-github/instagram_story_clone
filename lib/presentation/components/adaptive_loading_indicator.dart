@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +6,7 @@ class AdaptiveLoadingIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Platform.isAndroid
+    return Theme.of(context).platform == TargetPlatform.android
         ? const CircularProgressIndicator(color: Colors.white)
         : const CupertinoActivityIndicator(color: Colors.white);
   }
