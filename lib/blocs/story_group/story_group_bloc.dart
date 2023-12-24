@@ -19,8 +19,17 @@ class StoryGroupBloc extends Bloc<StoryGroupEvent, StoryGroupState> {
     on<StoryGroupEventScreenStoryResumed>(_onStoryResumed);
   }
 
+  /// Personally, I prefer not to keep any controller inside Blocs as it
+  /// conflicts with the separation of concerns and makes testing much more
+  /// difficult. You can see more at bloc tests.
+  ///
+  /// Since it is clearly stated that I can't use [StatefulWidget]s,
+  /// I will proceed as it is.
+  ///
+  /// In this case, we need a tree building process to use [PageController] or
+  /// [AnimationController] methods.
   late int _itemCount;
-  late PageController _controller;
+  late PageController _pageController;
 
   AnimationController? _currentStoryProgressAnimationController;
 
@@ -32,8 +41,8 @@ class StoryGroupBloc extends Bloc<StoryGroupEvent, StoryGroupState> {
     Emitter<StoryGroupState> emit,
   ) {
     _itemCount = event.itemCount;
-    _controller = PageController(initialPage: event.initialPage);
-    emit(StoryGroupStateReady(cont: _controller));
+    _pageController = PageController(initialPage: event.initialPage);
+    emit(StoryGroupStateReady(pageController: _pageController));
   }
 
   FutureOr<void> _onScreenTapped(
@@ -42,14 +51,15 @@ class StoryGroupBloc extends Bloc<StoryGroupEvent, StoryGroupState> {
   ) async {
     final tappedLeft = event.storyScreenTapRegion == StoryScreenTapRegion.left;
     final nextIndexPredicate =
-        (_controller.page ?? 0).toInt() + (tappedLeft ? -1 : 1);
+        (_pageController.page ?? 0).toInt() + (tappedLeft ? -1 : 1);
     if (0 <= nextIndexPredicate && nextIndexPredicate < _itemCount) {
-      await _controller.animateToPage(
+      await _pageController.animateToPage(
         nextIndexPredicate,
         duration: StoryConstants.storyTransitionDuration,
         curve: Curves.linear,
       );
-      emit(StoryGroupStatePageChange(newPage: _controller.page?.toInt() ?? 0));
+      emit(StoryGroupStatePageChange(
+          newPage: _pageController.page?.toInt() ?? 0));
     } else if (nextIndexPredicate <= 0) {
       emit(
         StoryGroupStateSendNavigationNotification(
@@ -108,7 +118,7 @@ class StoryGroupBloc extends Bloc<StoryGroupEvent, StoryGroupState> {
     StoryGroupEventScreenStoryPaused event,
     Emitter<StoryGroupState> emit,
   ) {
-    emit(StoryGroupStateScreenStoryPaused(storyIndex: event.storyIndex));
+    emit(StoryGroupStateScreenStoryPaused());
   }
 
   FutureOr<void> _onStoryResumed(

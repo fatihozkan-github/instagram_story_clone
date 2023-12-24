@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/constants/story_constants.dart';
 import '../../core/enums/enums.dart';
 import '../../data/models/story_group_model.dart';
-import '../../data/repository/story_repository.dart';
+import '../../data/repositories/story_repository.dart';
 
 part 'story_page_view_event.dart';
 part 'story_page_view_state.dart';
@@ -20,8 +20,18 @@ class StoryPageViewBloc extends Bloc<StoryPageViewEvent, StoryPageViewState> {
     on<StoryPageViewEventDispose>(_onDispose);
   }
 
+  /// Personally, I prefer not to keep any controller inside Blocs as it
+  /// conflicts with the separation of concerns and makes testing much more
+  /// difficult. You can see more at bloc tests.
+  ///
+  /// Since it is clearly stated that I can't use [StatefulWidget]s,
+  /// I will proceed as it is.
+  ///
+  /// In this case, we need a tree building process to use [PageController]
+  /// methods.
   late PageController _pageController;
-  late List<int> _storyGroupHistoryIndexList;
+
+  List<int> _storyGroupHistoryIndexList = [];
 
   final _storyRepository = StoryRepository();
 

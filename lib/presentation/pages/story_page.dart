@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../blocs/story_group/story_group_bloc.dart';
 import '../../blocs/story_page_view/story_page_view_bloc.dart';
 import '../components/adaptive_loading_indicator.dart';
 import '../components/story_group_view.dart';
@@ -83,11 +84,21 @@ class StoryPageView extends StatelessWidget {
         return BlocBuilder<StoryPageViewBloc, StoryPageViewState>(
           builder: (_, StoryPageViewState innerState) {
             return _buildPageViewItem(
-              StoryGroupView(
-                scaffoldState: Scaffold.of(context),
-                userModel: state.storyGroupList[index],
-                groupIndex: index,
-                initialPage: state.storyGroupHistoryIndexList[index],
+              BlocProvider(
+                create: (_) => StoryGroupBloc()
+                  ..add(
+                    StoryGroupEventInitialize(
+                      initialPage: state.storyGroupHistoryIndexList[index],
+                      itemCount:
+                          state.storyGroupList[index].storyDataList.length,
+                    ),
+                  ),
+                child: StoryGroupView(
+                  scaffoldState: Scaffold.of(context),
+                  storyGroupModel: state.storyGroupList[index],
+                  groupIndex: index,
+                  initialPage: state.storyGroupHistoryIndexList[index],
+                ),
               ),
               index,
               state.pageController.position.haveDimensions

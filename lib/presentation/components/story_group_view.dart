@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../blocs/story_group/story_group_bloc.dart';
 import '../../blocs/story_page_view/story_page_view_bloc.dart';
+import '../../blocs/story_player/story_player_bloc.dart';
 import '../../blocs/story_progress/story_progress_bloc.dart';
 import '../../core/enums/enums.dart';
 import '../../data/models/story_group_model.dart';
@@ -13,26 +14,16 @@ import 'story_progress_bar_item.dart';
 class StoryGroupView extends StatelessWidget {
   final int groupIndex;
   final int initialPage;
-  final StoryGroupModel userModel;
+  final StoryGroupModel storyGroupModel;
   final ScaffoldState scaffoldState;
 
   const StoryGroupView({
     super.key,
     required this.groupIndex,
     required this.initialPage,
-    required this.userModel,
+    required this.storyGroupModel,
     required this.scaffoldState,
   });
-
-  StoryGroupBloc _createStoryGroupBloc(_) {
-    return StoryGroupBloc()
-      ..add(
-        StoryGroupEventInitialize(
-          initialPage: initialPage,
-          itemCount: userModel.storyDataList.length,
-        ),
-      );
-  }
 
   StoryProgressBloc _createStoryProgressBloc(BuildContext context) {
     return StoryProgressBloc(
@@ -93,14 +84,11 @@ class StoryGroupView extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.black,
         body: BlocProvider(
-          create: _createStoryGroupBloc,
-          child: BlocProvider(
-            create: _createStoryProgressBloc,
-            child: BlocConsumer<StoryGroupBloc, StoryGroupState>(
-              listener: _listenStoryGroupBloc,
-              buildWhen: _buildStoryGroupBlocWhen,
-              builder: _buildStoryGroupBlocUI,
-            ),
+          create: _createStoryProgressBloc,
+          child: BlocConsumer<StoryGroupBloc, StoryGroupState>(
+            listener: _listenStoryGroupBloc,
+            buildWhen: _buildStoryGroupBlocWhen,
+            builder: _buildStoryGroupBlocUI,
           ),
         ),
       ),
@@ -124,15 +112,23 @@ class StoryGroupView extends StatelessWidget {
   Widget _buildPageView(BuildContext context, StoryGroupStateReady state) {
     return PageView.builder(
       physics: const NeverScrollableScrollPhysics(),
-      controller: state.cont,
-      itemCount: userModel.storyDataList.length,
+      controller: state.pageController,
+      itemCount: storyGroupModel.storyDataList.length,
       itemBuilder: (_, int index) {
-        return StoryPlayer(
-          storyIndex: index,
-          storyDataModel: userModel.storyDataList[index],
-          onTap: (StoryScreenTapRegion storyScreenTapRegion) {
-            _onTap(context, storyScreenTapRegion);
-          },
+        return BlocProvider(
+          create: (_) => StoryPlayerBloc()
+            ..add(
+              StoryPlayerEventInitial(
+                storyDataModel: storyGroupModel.storyDataList[index],
+              ),
+            ),
+          child: StoryPlayer(
+            storyIndex: index,
+            storyDataModel: storyGroupModel.storyDataList[index],
+            onTap: (StoryScreenTapRegion storyScreenTapRegion) {
+              _onTap(context, storyScreenTapRegion);
+            },
+          ),
         );
       },
     );
@@ -155,7 +151,7 @@ class StoryGroupView extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    userModel.name,
+                    storyGroupModel.name,
                     style: const TextStyle(color: Colors.white),
                   ),
                   const SizedBox(width: 2),
@@ -166,14 +162,14 @@ class StoryGroupView extends StatelessWidget {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    userModel.timestamp,
+                    storyGroupModel.timestamp,
                     style: const TextStyle(color: Colors.grey),
                   ),
                 ],
               ),
               const SizedBox(height: 2),
               Text(
-                userModel.subtitle,
+                storyGroupModel.subtitle,
                 style: const TextStyle(color: Colors.grey),
               ),
             ],
@@ -188,7 +184,7 @@ class StoryGroupView extends StatelessWidget {
   }
 
   Widget _buildStoryProgressBar(BuildContext context) {
-    final storyGroupLength = userModel.storyDataList.length;
+    final storyGroupLength = storyGroupModel.storyDataList.length;
     return Row(
       children: [
         for (int i = 0; i < storyGroupLength; i++)

@@ -5,9 +5,9 @@ sealed class StoryGroupState {}
 class StoryGroupStateInitial extends StoryGroupState {}
 
 class StoryGroupStateReady extends StoryGroupState {
-  final PageController cont;
+  final PageController pageController;
 
-  StoryGroupStateReady({required this.cont});
+  StoryGroupStateReady({required this.pageController});
 }
 
 class StoryGroupStatePageChange extends StoryGroupState {
@@ -38,10 +38,6 @@ class StoryGroupStateScreenStoryStart extends StoryGroupState {
   StoryGroupStateScreenStoryStart({required this.newPage});
 }
 
-class StoryGroupStateScreenStoryPaused extends StoryGroupState {
-  final int storyIndex;
-
-  StoryGroupStateScreenStoryPaused({required this.storyIndex});
-}
+class StoryGroupStateScreenStoryPaused extends StoryGroupState {}
 
 class StoryGroupStateScreenStoryResumed extends StoryGroupState {}

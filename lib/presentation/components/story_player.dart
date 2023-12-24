@@ -65,13 +65,9 @@ class StoryPlayer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => StoryPlayerBloc()
-        ..add(StoryPlayerEventInitial(storyDataModel: storyDataModel)),
-      child: BlocConsumer<StoryPlayerBloc, StoryPlayerState>(
-        listener: _listenStoryPlayerBloc,
-        builder: _buildStoryPlayerBlocUI,
-      ),
+    return BlocConsumer<StoryPlayerBloc, StoryPlayerState>(
+      listener: _listenStoryPlayerBloc,
+      builder: _buildStoryPlayerBlocUI,
     );
   }
 
